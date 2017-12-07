@@ -11,15 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    $posts = App\Post::latest('published_at')->get();
+Route::get('/', 'PagesController@index');
 
-    return view('welcome', compact('posts'));
+Route::get('admin', 'AdminController@index');
+
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth'], function () {
+  Route::get('posts', 'PostsController@index');
 });
-
-Route::get('admin', function () {
-    return view('admin.dashboard');
-})->middleware('auth');
 
 // Authentication Routes...
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
